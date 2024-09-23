@@ -4,6 +4,7 @@ pipeline {
     tools {
         jdk 'jdk17'
         maven 'maven3'
+        nodejs 'nodejs'
     }
 
     environment {
@@ -14,7 +15,7 @@ pipeline {
     }
 
     stages {
-        stage('SCM') {
+        stage('Clone Repository') {
             steps {
                 echo "Fetching files..."
                 git branch: 'main', changelog: false, poll: false, url: 'https://github.com/paigehai/2048GameTest'
@@ -33,7 +34,7 @@ pipeline {
                 echo 'Testing application...'
                 sh 'mvn test'
             }
-        }
+        } 
 
         stage('Build & Push Docker Image') {
             steps {
@@ -72,6 +73,12 @@ pipeline {
                         sh "docker-compose up -d"
                     }
                 }
+            }
+        }
+
+        stage('Release to Production') {
+            steps {
+                echo 'Deploying to production...'
             }
         }
     }
