@@ -9,7 +9,7 @@ pipeline {
     environment {
         PATH = "/usr/local/bin:${env.PATH}"
         SONAR_TOKEN = credentials('sonarqube-token')
-        DOCKER_IMAGE_NAME = 'paigehai/2048game:latest'
+        DOCKER_IMAGE_NAME = 'paigehai/2048gametest:latest'
         SONAR_URL = 'http://localhost:9000/'
     }
 
@@ -17,7 +17,7 @@ pipeline {
         stage('SCM') {
             steps {
                 echo "Fetching files..."
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/paigehai/2048Game'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/paigehai/2048GameTest'
             }
         }
 
@@ -57,7 +57,6 @@ pipeline {
                             -Dsonar.projectName=2048Game \
                             -Dsonar.projectKey=2048Game \
                             -Dsonar.java.binaries=. \
-                            -Dsonar.login=${SONAR_TOKEN} \
                             -Dsonar.url=${SONAR_URL} \
                         """
                     }
@@ -70,7 +69,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                        sh "docker run -d -p 8070:8070 --name 2048game ${DOCKER_IMAGE_NAME}"
+                        sh "docker-compose up -d"
                     }
                 }
             }
