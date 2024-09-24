@@ -78,7 +78,13 @@ pipeline {
 
         stage('Release to Production') {
             steps {
-                echo 'Deploying to production...'
+                echo 'Deploying to production using AWS CodeDeploy...'
+            }
+        }
+
+        stage('Monitoring and Alerting') {
+            steps {
+                echo 'Monitoring for anomolies using DataDog...'
             }
         }
     }
