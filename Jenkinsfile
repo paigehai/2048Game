@@ -10,7 +10,7 @@ pipeline {
     environment {
         PATH = "/usr/local/bin:${env.PATH}"
         SONAR_TOKEN = credentials('sonarqube-token')
-        DOCKER_IMAGE_NAME = 'paigehai/2048game:latest'
+        DOCKER_IMAGE_NAME = 'paigehai/2048gametest:latest'
         SONAR_URL = 'http://localhost:9000/'
     }
 
@@ -18,7 +18,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 echo "Fetching files..."
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/paigehai/2048Game'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/paigehai/2048GameTest'
             }
         }
 
